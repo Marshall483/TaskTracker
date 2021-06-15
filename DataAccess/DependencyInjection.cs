@@ -15,7 +15,7 @@ namespace DataAccess
             services.AddDbContext<Database>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("projetracker")));
 
-            services.AddIdentity<User, IdentityUser<Guid>>(opts => {
+            services.AddIdentity<User, IdentityRole<Guid>>(opts => {
                 opts.Password.RequiredLength = 5;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
