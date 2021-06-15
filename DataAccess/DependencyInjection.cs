@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models;
 using System;
@@ -6,15 +8,15 @@ using System;
 
 namespace DataAccess
 {
-    public static class DependencyInjection
+    public static class Extenstion
     {
         public static IServiceCollection ConfigureDataAccess(this IServiceCollection services,
-           IConfiguration configuration)
+            IConfiguration configuration)
         {
             services.AddDbContext<Database>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("ITISBet")));
+                options.UseNpgsql(configuration.GetConnectionString("projetracker")));
 
-            services.AddIdentity<User, IdentityRole<Guid>>(opts => {
+            services.AddIdentity<User, IdentityUser<Guid>>(opts => {
                 opts.Password.RequiredLength = 5;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
