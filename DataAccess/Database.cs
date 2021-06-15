@@ -13,8 +13,8 @@ namespace DataAccess
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<Project> Projects { get; set; }
 
-        public Database(DbContextOptions<Database> options)
-            : base(options) { }
+        public Database(DbContextOptions<Database> options) :
+            base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
