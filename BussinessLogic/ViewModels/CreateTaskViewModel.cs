@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ViewModels
 {
-    public class TaskViewModel
+    public class CreateTaskViewModel
     {
         [Required]
-        [Display(Name = "Give name for a task.")]
+        [Display(Name = "Give the name for new task.")]
         [MinLength(3, ErrorMessage = "Required minimun 3 symbols.")]
         [MaxLength(50, ErrorMessage = "Constraint on maximun 50 symbols exceeded.")]
         public string Name { get; set; }

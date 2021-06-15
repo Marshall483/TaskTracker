@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DataAccess;
+using Infrastructure;
 
 namespace TaskTracker
 {
@@ -24,7 +25,7 @@ namespace TaskTracker
             services.AddControllersWithViews();
 
             services.ConfigureDataAccess(Configuration);
-
+            services.ConfigureInfrastructure(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
