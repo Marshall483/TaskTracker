@@ -1,49 +1,74 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DAL.Models;
+using Models;
 using Infrastructure.Notifications;
 
 namespace Infrastructure.EmailNotifications
 {
     public abstract class EmailNotificatorBase:
         IRegistrationNotificator<bool>,
-        IBettingNotificator<bool>,
-        ISecurityNotificator<bool>,
-        ITransactionsNotificator<bool>
+        IProjectNotificator<bool>,
+        ITaskNotificator<bool>
     {
         private protected EmailSender _sender;
 
         public EmailNotificatorBase(EmailSender sender) =>
             _sender = sender;
 
-        public async Task<bool> AboutBetApplyed(string email, UsersBets bet) =>
-           await SendNotify(email, $"Your bet from {ToPretty(bet.Time)} on {bet.Bet.Match.Team1} vs {bet.Bet.Match.Team2} for ${bet.Money} x{bet.Coef} ({bet.Bet.Description}) has been applyed!");
 
-        public async Task<bool> AboutBetLoosed(string email, UsersBets bet) =>
-           await SendNotify(email, $"Your bet from {ToPretty(bet.Time)} on {bet.Bet.Match.Team1} vs {bet.Bet.Match.Team2} for ${bet.Money} x{bet.Coef} ({bet.Bet.Description})  has been loosed!");
-
-        public async Task<bool> AboutBetWinned(string email, UsersBets bet) =>
-           await SendNotify(email, $"Your bet from {ToPretty(bet.Time)}  on {bet.Bet.Match.Team1} vs {bet.Bet.Match.Team2} for ${bet.Money} x{bet.Coef} ({bet.Bet.Description})  has been winned!");
-
-        public async Task<bool> AboutPassportUpdated(string email) =>
-           await SendNotify(email, $"Your passport has been updated!");
-
-        public async Task<bool> AboutPasswordUpdated(string email) =>
-           await SendNotify(email, $"Your password has been updated!");
-
-        public async Task<bool> AboutProfileUpdated(string email) =>
-           await SendNotify(email, $"Your profile has been updated!");
-
+        /* Registration */
         public async Task<bool> AboutRegistrationSucceeded(string email) =>
-           await SendNotify(email, $"Dear {email}, thank you for registration!");
+           await SendNotify(email, $"Dear {email}, thank you for registration on task tracker!");
 
-        public async Task<bool> AboutTransactionPassed(string email, Transactions transaction) =>
-           await SendNotify(email, $"Your {transaction.Type} transaction from {ToPretty(transaction.Date)} for ${transaction.Money} has been passed!");
+
+        /* About Projects */
+        public async Task<bool> AboutProjectCreated(string email, Project project) =>
+           await SendNotify(email, $"Dear {email}, project \"{project.ProjectName}\" juit created!");
+
+        public async Task<bool> AboutStateChanged(string email, Project project) =>
+           await SendNotify(email, $"Dear {email}, state in project \"{project.ProjectName}\" " +
+               $"shanged state to {ToPretty(project.State)}!");
+
+        public async Task<bool> AboutPriorityChanged(string email, Project project) =>
+           await SendNotify(email, $"Dear {email},prioroty in project \"{project.ProjectName}\" " +
+               $"shanged state to {ToPretty(project.Priority)}!");
+
+
+        /* About Tasks */
+        public async Task<bool> AboutTaskCreated(string email, ProjectTask task) =>
+           await SendNotify(email, $"Dear {email}, a new task in your \"{task.Project.ProjectName}\" project" +
+               $" with header {task.TaskName} juit created!");
+
+        public async Task<bool> AboutStateUpdated(string email, ProjectTask task) =>
+            await SendNotify(email, $"Dear {email}, a new task in your \"{task.Project.ProjectName}\" project" +
+               $" with header {task.TaskName} have update state to {ToPretty(task.State)}!");
+
 
         private async Task<bool> SendNotify(string email, string message) =>
             await _sender.SendEmailAsync(email, "Notification", message);
 
         private string ToPretty(DateTime time) =>
             time.ToString("MMMM dd, yyyy");
+
+        private string ToPretty(ProjectState state)
+        {
+            if (ProjectState.Active == state) return "Active";
+            if (ProjectState.Completed == state) return "Completed";
+            return "Created";
+        }
+
+        private string ToPretty(TaskState state)
+        {
+            if (TaskState.Done == state) return "Done";
+            if (TaskState.InProgress == state) return "In progress";
+            return "ToDo";
+        }
+
+        private string ToPretty(int prioroty)
+        {
+            if (prioroty == 1) return "Low";
+            if (prioroty == 2) return "Normal";
+            return "High";
+        }
     }
 }

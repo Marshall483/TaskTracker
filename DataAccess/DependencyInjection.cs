@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Models;
 using System;
 
-
 namespace DataAccess
 {
     public static class Extenstion
