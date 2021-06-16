@@ -1,0 +1,28 @@
+﻿@model CreateTaskViewModel
+
+
+@using (Html.BeginForm("Create", "Task", FormMethod.Post))
+{
+    @Html.ValidationSummary(true);
+    @Html.Hidden("ProjectGuid", Model.ProjectGuid)
+
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">New task?</h6>
+        <div class="media text-muted pt-3">
+
+            <div class="form-wrap">
+                <label asp-for="Name" , class="sr-only">Name of the task</label>
+
+                <div>
+                    <input class="form-control" asp-for="Name" , type="text" placeholder="The task is...">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <small class="d-block text-right mt-3">
+            <button class="alert-warning">Create task</button>
+        </small>
+    </div>
+}

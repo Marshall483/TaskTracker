@@ -18,12 +18,15 @@ namespace TaskTracker.Controllers
         public IActionResult Index() =>
             View();
 
-        public IActionResult Create(Guid forProject) => 
-            View();    
+        [HttpPost]
+        public IActionResult Create(Guid forProject) =>
+            View();
 
+        [HttpPost]
         public IActionResult Edit(Guid guid) =>
             View();
 
+        [HttpPost]
         public IActionResult Delete(Guid guid) =>
             View();
     }

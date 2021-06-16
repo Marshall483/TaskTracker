@@ -3,6 +3,18 @@
 <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
         <h1 class="display-4 font-italic">@Model.ProjectName.</h1>
+        <div class="display-4 font-italic">State:
+
+            @{
+                if (ProjectState.Active == Model.State)
+                { <p style="color: green">Active</p> }
+                else if (ProjectState.NotStarted == Model.State)
+                { <p style="color: mediumturquoise">Not started</p>}
+                else
+                { <p style="color: red">Completed</p>}
+            }
+
+        </div>
         <p class="lead mb-0">Start - @Model.StartDate.ToString("MMMM dd, yyyy"), End - @Model.CompetitionDate.ToString("MMMM dd, yyyy").</p>
     </div>
 </div>
@@ -46,7 +58,6 @@
                             <td> 
                                 <div class="btn-group-sm">
                                     <button class="btn-info">View</button>
-                                    <button class="btn-warning">Delete</button>
                                 </div> 
                             </td>
 
@@ -63,9 +74,9 @@
        <h1 class="h2">No any more tasks here</h1>
        <div class="btn-toolbar mb-2 mb-md-0">
            <div class="btn-group mr-2">
+               <button type="button" class="btn btn-sm btn-outline-secondary">Edit project</button>
                <button type="button" class="btn btn-sm btn-outline-secondary">Create another</button>
-               <button type="button" class="btn btn-sm btn-outline-secondary">Go back</button>
-            </div>
+           </div>
         </div>
     </div>
 

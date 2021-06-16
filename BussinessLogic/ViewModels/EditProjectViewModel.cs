@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Models;
+﻿using Models;
 using System;
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ViewModels
 {
-    public class CreateProjectViewModel
+    public class EditProjectViewModel 
     {
+
         [Required]
         [Display(Name = "Give name for new project.")]
         [MinLength(3, ErrorMessage = "Required minimun 3 symbols.")]
@@ -34,6 +34,8 @@ namespace ViewModels
         [DataType(DataType.Date)]
         public DateTime CompetitionDate { get; set; }
 
-        public Guid UserGuid { get; set; }
+        [Required]
+        public Guid ProjectGuid { get; set; }
+
     }
 }

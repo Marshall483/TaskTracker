@@ -1,5 +1,7 @@
 ﻿using Models;
+using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ViewModels
 {
@@ -13,7 +15,9 @@ namespace ViewModels
 
         [Required]
         [Display(Name = "Choose a task state.")]
-        public TaskState State { get; set; }
+        public SelectList State { get; set; }
+
+        public Guid ProjectGuid { get; set; }
 
     }
 }

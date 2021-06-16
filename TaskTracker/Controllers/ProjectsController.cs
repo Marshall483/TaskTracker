@@ -20,12 +20,17 @@ namespace TaskTracker.Controllers
         public IActionResult Index() =>
             View();
 
-        public IActionResult Crate(Guid forUser) =>
+        public IActionResult Create(Guid forUser) =>
             View();
 
         public IActionResult View(Guid guid) =>
             View();
 
+        [HttpGet]
+        public IActionResult Edit(Guid guid) =>
+            View();
+
+        [HttpPost]
         public IActionResult Edit(Guid guid) =>
             View();
 
