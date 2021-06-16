@@ -7,30 +7,24 @@ using System.Threading.Tasks;
 
 namespace TaskTracker.Controllers
 {
-    public class ProjectsController : Controller
+    public class TaskController : Controller
     {
         private readonly INotificator<bool> _notify;
-
-        public ProjectsController(INotificator<bool> notificator)
+        public TaskController(INotificator<bool> notificator)
         {
             _notify = notificator;
         }
 
-
         public IActionResult Index() =>
             View();
 
-        public IActionResult Crate(Guid forUser) =>
-            View();
-
-        public IActionResult View(Guid guid) =>
-            View();
+        public IActionResult Create(Guid forProject) => 
+            View();    
 
         public IActionResult Edit(Guid guid) =>
             View();
 
         public IActionResult Delete(Guid guid) =>
             View();
-        
     }
 }
