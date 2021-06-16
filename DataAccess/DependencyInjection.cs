@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +17,8 @@ namespace DataAccess
             services.AddDbContext<Database>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("projetracker")));
 
-            services.AddIdentity<User, IdentityRole<Guid>>(opts => {
+            services.AddIdentity<User, IdentityRole<Guid>>(opts =>
+            {
                 opts.Password.RequiredLength = 5;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
@@ -24,6 +27,13 @@ namespace DataAccess
             })
               .AddEntityFrameworkStores<Database>()
               .AddDefaultTokenProviders();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/RegLog/Index");
+                    options.AccessDeniedPath = new PathString("/RegLog/Index");
+                });
 
             return services;
         }

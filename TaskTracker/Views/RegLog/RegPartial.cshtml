@@ -1,0 +1,63 @@
+﻿@model RegisterViewModel
+
+<registration class="active">
+
+    @{
+        using (Html.BeginForm("Reg", "RegLog", FormMethod.Post, new { @class = "form-signin" }))
+        {
+            @Html.ValidationSummary(true);
+
+            <img class="mb-4" src="/IMG/R-REGISTER.jpg" alt="" width="72" height="72">
+
+            <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
+
+            <div class="form-wrap">
+                <label asp-for="Email" , class="sr-only">Email</label>
+
+                <div>
+                    <input class="form-control" asp-for="Email" , type="email" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <label asp-for="Login" , class="sr-only">Login</label>
+
+                <div>
+                    <input class="form-control" asp-for="Login" , type="text" placeholder="Login">
+                    <span asp-validation-for="Login" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <label asp-for="Password" , class="sr-only">Password</label>
+
+                <div>
+                    <input class="form-control" asp-for="Password" , type="password" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <label asp-for="PasswordConfirm" , class="sr-only">Password confirm</label>
+
+                <div>
+                    <input class="form-control" asp-for="PasswordConfirm" , type="password" placeholder="Password confirm">
+                    <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            <div onclick="switchLogReg()" class="switch-btn" data-currentpage="reg" id="logRegSwitch">
+                <span class="btn-outline-warning" id="logRegSwitchCircle">
+                    Switch to iogin
+                </span>
+            </div>
+
+
+            <p class="mt-5 mb-3 text-muted">© 2017-2021</p>
+
+        }
+    }
+
+</registration>

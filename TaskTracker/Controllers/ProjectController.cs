@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Notifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace TaskTracker.Controllers
 {
-    public class ProjectsController : Controller
+    [Authorize]
+    public class ProjectController : Controller
     {
         private readonly INotificator<bool> _notify;
 
-        public ProjectsController(INotificator<bool> notificator)
+        public ProjectController(INotificator<bool> notificator)
         {
             _notify = notificator;
         }
-
 
         public IActionResult Index() =>
             View();
@@ -27,10 +28,6 @@ namespace TaskTracker.Controllers
             View();
 
         [HttpGet]
-        public IActionResult Edit(Guid guid) =>
-            View();
-
-        [HttpPost]
         public IActionResult Edit(Guid guid) =>
             View();
 

@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Notifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace TaskTracker.Controllers
 {
+    [Authorize]
     public class TaskController : Controller
     {
         private readonly INotificator<bool> _notify;

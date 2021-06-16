@@ -9,6 +9,7 @@ namespace DataAccess
     public class Database :
         IdentityDbContext<User, IdentityRole<Guid>, Guid>    
         {
+        public override DbSet<User> Users { get; set; }
         public DbSet<TaskFields> TaskFields { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<Project> Projects { get; set; }

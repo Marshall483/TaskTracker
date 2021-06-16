@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DataAccess;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace TaskTracker
 {
@@ -26,6 +28,8 @@ namespace TaskTracker
 
             services.ConfigureDataAccess(Configuration);
             services.ConfigureInfrastructure(Configuration);
+
+            services.AddSession();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -38,6 +42,7 @@ namespace TaskTracker
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
