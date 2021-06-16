@@ -15,15 +15,12 @@ namespace TaskTracker.Controllers
         private readonly INotificator<bool> _notify;
         private readonly UserManager<User> _user;
         private readonly SignInManager<User> _signIn;
-        private readonly Database _db;
-
         public RegLogController(INotificator<bool> notificator, UserManager<User> userManager,
-            SignInManager<User> signInManager, Database db)
+            SignInManager<User> signInManager)
         {
             _notify = notificator;
             _user = userManager;
             _signIn = signInManager;
-            _db = db;
         }
 
         [HttpGet]
@@ -68,9 +65,7 @@ namespace TaskTracker.Controllers
                 var res = await SignIn(user.UserName, logVM.Password, logVM.Remember);
 
                 if (res.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                    return RedirectToAction("Index", "Project");
                 else
                     ModelState.AddModelError(string.Empty, "Incorrect login or password.");
 

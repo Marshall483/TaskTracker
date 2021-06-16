@@ -27,4 +27,18 @@ namespace Monads
         public TError GetFail() =>
             !Succeeded ? Error : throw new InvalidOperationException("Operation succeded");
     }
+
+    public struct Error
+    {
+        public string Message { get; set; }
+
+        public Error(string errorMessage) =>
+            Message = errorMessage;
+
+        public static implicit operator Error(string errorMessage) =>
+            new Error (errorMessage);
+        
+        public static explicit operator string(Error error) =>
+            error.Message;
+    }
 }

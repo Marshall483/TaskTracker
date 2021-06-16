@@ -8,9 +8,9 @@ namespace Models
 {
     public enum ProjectState : byte
     {
-        NotStarted, 
-        Active,
-        Completed
+        NotStarted = 1, 
+        Active = 2,
+        Completed = 3
     }
 
     public class Project

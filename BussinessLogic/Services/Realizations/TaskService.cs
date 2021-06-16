@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Services.Abstractions;
+using Abstractions;
 using Models;
 using System.Threading.Tasks;
+using Monads;
 
 namespace Services 
 {
-    public class TaskService : IProjectService<ProjectTask>
+    public class TaskService : IProjectService<Either<ProjectTask, ICollection<Error>>>
     {
-        public Task<ProjectTask> Create()
+        public Task<Either<ProjectTask, ICollection<Error>>> Create()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ProjectTask> Delete()
+        public Task<Either<ProjectTask, ICollection<Error>>> Delete()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ProjectTask> Edit()
+        public Task<Either<ProjectTask, ICollection<Error>>> Edit()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ProjectTask> View()
+        public Task<Either<ProjectTask, ICollection<Error>>> View()
         {
             throw new NotImplementedException();
         }

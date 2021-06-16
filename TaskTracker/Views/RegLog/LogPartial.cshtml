@@ -8,9 +8,9 @@
             @Html.ValidationSummary(true);
 
 
-            <img class="mb-4" src="/IMG/L-LOGIN.jpg" alt="" width="72" height="72">
+            <img class="col-mb-4" src="/IMG/L-LOGIN.jpg" style="margin-left: 128px;" width="72" height="72">
 
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <h1 class="h3 col-mb-3 font-weight-normal">Please sign in</h1>
 
             <div class="form-wrap">
                 <label asp-for="Email" , class="sr-only">Email</label>
@@ -30,11 +30,12 @@
                 </div>
             </div>
 
-            <div class="form-wrap">
+            <div class="form-wrap" style=" display: flex;">
+                <p>Remember? </p>
                 <label asp-for="Remember" , class="sr-only">Remember</label>
 
                 <div>
-                    <input class="form-control" asp-for="Remember" , type="checkbox">
+                    <input class="form-control" asp-for="Remember" , type="checkbox" style="height: 30px; width: 30px; margin-left: 10px;">
                     <span asp-validation-for="Remember" class="text-danger"></span>
                 </div>
             </div>

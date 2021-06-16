@@ -1,7 +1,7 @@
 ﻿@model CreateTaskViewModel
 
 
-@using (Html.BeginForm("Create", "Task", FormMethod.Post))
+@using (Html.BeginForm("PostCreate", "Task", FormMethod.Post))
 {
     @Html.ValidationSummary(true);
     @Html.Hidden("ProjectGuid", Model.ProjectGuid)

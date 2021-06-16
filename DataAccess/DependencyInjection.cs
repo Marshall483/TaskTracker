@@ -28,12 +28,7 @@ namespace DataAccess
               .AddEntityFrameworkStores<Database>()
               .AddDefaultTokenProviders();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = new PathString("/RegLog/Index");
-                    options.AccessDeniedPath = new PathString("/RegLog/Index");
-                });
+            
 
             return services;
         }
