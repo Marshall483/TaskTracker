@@ -4,6 +4,7 @@
 @using (Html.BeginForm("AddField", "Task", FormMethod.Post))
 {
     @Html.ValidationSummary(true);
+    @Html.Hidden("TaskGuid", Model.TaskGuid);
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">New field?</h6>
@@ -13,12 +14,10 @@
                 <label asp-for="Descrition" , class="sr-only">Issue...</label>
 
                 <div>
-                    <input class="form-control" asp-for="Descrition" , type="text" placeholder="Issue...">
+                    <input class="form-control" asp-for="Descrition" , type="text" placeholder="text...">
                     <span asp-validation-for="Descrition" class="text-danger"></span>
                 </div>
             </div>
-
-            <input class="form-control" asp-for="ProjectGuid" , type="hidden" value="@Model.ProjectGuid">
 
         </div>
 

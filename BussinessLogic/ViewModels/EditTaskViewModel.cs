@@ -1,11 +1,10 @@
-﻿using Models;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ViewModels
 {
-    public class CreateTaskViewModel
+    public class EditTaskViewModel
     {
         [Required]
         [Display(Name = "Give the name for new task.")]
@@ -15,10 +14,12 @@ namespace ViewModels
 
         [Required]
         [Display(Name = "Choose a task state.")]
-        public string TaskState { get; set; }  
+        public string TaskState { get; set; }
         public SelectList State { get; set; }
 
+        [Required]
+        public Guid TaskGuid { get; set; }
+        [Required]
         public Guid ProjectGuid { get; set; }
-
     }
 }

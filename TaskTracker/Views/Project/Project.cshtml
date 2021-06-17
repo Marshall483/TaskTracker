@@ -2,8 +2,9 @@
 
 <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
-        <h1 class="display-4 font-italic">@Model.ProjectName.</h1>
-        <div class="display-4 font-italic">State:
+        <h1 class="display-4 font-italic">Project @Model.ProjectName</h1>
+        <div class="display-inline font-italic">
+            State:
 
             @{
                 if (ProjectState.Active == Model.State)
@@ -12,6 +13,16 @@
                 { <p style="color: mediumturquoise">Not started</p>}
                 else
                 { <p style="color: red">Completed</p>}
+            }
+
+            Priority: 
+            @{
+                if (Model.Priority == 1)
+                { <p style="color: mediumturquoise">Low</p> }
+                else if (Model.Priority == 2)
+                { <p style="color: green">Normal</p>}
+                else
+                { <p style="color: red">High</p>}
             }
 
         </div>
@@ -46,18 +57,19 @@
                    {
                         <tr>
 
-                            <td>@{++counter;}</td>
+                            <td>@{ ++counter; @counter.ToString() }</td>
                             <td>@task.TaskName</td>
 
                             <td>@{
                                 if (TaskState.Done == task.State) { <p style="color: green">Done</p> }
                                 else if (TaskState.InProgress == task.State) { <p style="color: mediumturquoise">In progress</p>}
-                                else { <p style ="color: red">ToDo</p>} }.
+                                else { <p style ="color: red">ToDo</p>} }
                             </td>
 
                             <td> 
-                                <div class="btn-group-sm">
-                                    <button class="btn-info">View</button>
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Task" asp-action="Task" asp-route-taskGuid="@task.Id.ToString()">View</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Task" asp-action="Delete" asp-route-taskGuid="@task.Id.ToString()">Delete</a>
                                 </div> 
                             </td>
 
@@ -74,8 +86,9 @@
        <h1 class="h2">No any more tasks here</h1>
        <div class="btn-toolbar mb-2 mb-md-0">
            <div class="btn-group mr-2">
-               <button type="button" class="btn btn-sm btn-outline-secondary">Edit project</button>
-               <button type="button" class="btn btn-sm btn-outline-secondary">Create another</button>
+               <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-projectGuid="@Model.Id.ToString()">Delete project</a>
+               <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-projectGuid="@Model.Id.ToString()">Edit project</a>
+               <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Create" asp-controller="Task" asp-route-projectGuid="@Model.Id.ToString()">Create task</a>
            </div>
         </div>
     </div>

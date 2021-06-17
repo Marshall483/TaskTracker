@@ -8,50 +8,66 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Constructors
 {
-    public class CreateProjectConstructor 
-        : IConstructor<CreateProjectViewModel, Project>
+    public class CreateProjectConstructor :
+        ProjectConstructorBase,
+        IConstructor<CreateProjectViewModel, Project>
     {
         public CreateProjectViewModel ConsructView(Project project)
         {
             var model = new CreateProjectViewModel();
 
-            model.StateSelect = new SelectList(new[] { "Not Started", "Active", "Completed" });
-            model.PrioritySelect = new SelectList(new[] { "Low", "Normal", "High" });
+            model.StateSelect = new SelectList(_stateByStringMap.Keys);
+            model.PrioritySelect = new SelectList(_priorityByStringMap.Keys);
 
             return model;
         }
+
+        public Project ConstructModel(CreateProjectViewModel model)
+        {
+            var project = new Project();
+
+            project.ProjectName = model.Name;
+            project.Priority = _priorityByStringMap[model.Priority];
+            project.State = _stateByStringMap[model.State];
+            project.StartDate = model.StartDate;
+            project.CompetitionDate = model.CompetitionDate;
+            project.UserId = model.UserGuid;
+
+            return project;
+        }
     }
 
-    public class EditProjectConstructor 
-        : IConstructor<EditProjectViewModel, Project>
+    public class EditProjectConstructor :
+        ProjectConstructorBase,
+        IConstructor<EditProjectViewModel, Project>
     {
-        public readonly Dictionary<ProjectState, string> _stateMap =
-            new Dictionary<ProjectState, string>
-            {
-                {ProjectState.NotStarted, "Not started" },
-                {ProjectState.Active, "Active" },
-                {ProjectState.Completed, "Completed" } 
-            };
-
-        public readonly Dictionary<int, string> _priorityMap =
-            new Dictionary<int, string>
-            {
-                { 1, "Low" },
-                { 2, "Normal" },
-                { 3, "High" },
-            };
 
         public EditProjectViewModel ConsructView(Project project)
         {
             var model = new EditProjectViewModel();
 
-            model.Name = project.ProjectName ?? default;
-            model.Priority = _priorityMap[project.Priority];
-            model.State = _stateMap[project.State];
+            model.Name = project.ProjectName;
+            model.Priority = _priorityByIntMap[project.Priority];
+            model.State = _stateByEnumMap[project.State];
             model.StartDate = project.StartDate;
             model.CompetitionDate = project.CompetitionDate;
+            model.StateSelect = new SelectList(_stateByStringMap.Keys);
+            model.PrioritySelect = new SelectList(_priorityByStringMap.Keys);
 
             return model;
+        }
+
+        public Project ConstructModel(EditProjectViewModel model)
+        {
+            var project = new Project();
+
+            project.ProjectName = model.Name;
+            project.Priority = _priorityByStringMap[model.Priority];
+            project.State = _stateByStringMap[model.State];
+            project.StartDate = model.StartDate;
+            project.CompetitionDate = model.CompetitionDate;
+
+            return project;
         }
     }
 }

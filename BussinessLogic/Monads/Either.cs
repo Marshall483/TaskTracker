@@ -9,23 +9,37 @@ namespace Monads
         private TResult Result;
         private TError Error;
 
-        public void SuccessWith(TResult result)
-        {
-            Result = result;
-            Succeeded = true;
-        }
-
         public void FailWith(TError error)
         {
             Error = error;
             Succeeded = false;
         }
 
-        public TResult GetResult() =>
+        public TResult GetResult =>
             Succeeded ? Result : throw new InvalidOperationException("Operation failed");
 
-        public TError GetFail() =>
+        public TError GetFail =>
             !Succeeded ? Error : throw new InvalidOperationException("Operation succeded");
+
+        public static Either<TResult, TError> WithSuccess(TResult result)
+        {
+            var monad = new Either<TResult, TError>();
+
+            monad.Succeeded = true;
+            monad.Result = result;
+
+            return monad;
+        } 
+
+        public static Either<TResult, TError> WithError(TError error)
+        {
+            var monad = new Either<TResult, TError>();
+
+            monad.Succeeded = false;
+            monad.Error = error;
+
+            return monad;
+        }
     }
 
     public struct Error

@@ -19,11 +19,15 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+
         [Required]
         public string ProjectName { get; set; }
 
+        // Must be private, but i cant map it to db.
         [Required]
-        private int _priority;
+        public int intPriority { get; set; }
 
         public ICollection<ProjectTask> Tasks { get; set; }
 
@@ -31,7 +35,7 @@ namespace Models
         public ProjectState State { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public DateTime StartDate { get; set; }
 
         [Required]
@@ -46,14 +50,14 @@ namespace Models
         [NotMapped]
         public int Priority
         {
-            get => _priority;
+            get => intPriority;
             set
             {
                 //   Low            Normal        High         
                 if (value == 1 || value == 2 || value == 3)
-                    _priority = value;
+                    intPriority = value;
                 else
-                    _priority = 2;
+                    intPriority = 2;
             }
         }
     }
