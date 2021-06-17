@@ -5,12 +5,13 @@ using Abstractions;
 using Models;
 using System.Threading.Tasks;
 using Monads;
+using ViewModels;
 
 namespace Services 
 {
-    public class TaskService : IProjectService<Either<ProjectTask, ICollection<Error>>>
+    public class TaskService : IProjectService<Either<ProjectTask, ICollection<Error>>, CreateTaskViewModel>
     {
-        public Task<Either<ProjectTask, ICollection<Error>>> Create()
+        public Task<Either<ProjectTask, ICollection<Error>>> Create(CreateTaskViewModel model)
         {
             throw new NotImplementedException();
         }
@@ -25,7 +26,7 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<Either<ProjectTask, ICollection<Error>>> View()
+        public Task<Either<ProjectTask, ICollection<Error>>> View(string guid)
         {
             throw new NotImplementedException();
         }

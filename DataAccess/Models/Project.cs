@@ -19,6 +19,9 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+
         [Required]
         public string ProjectName { get; set; }
 
@@ -31,7 +34,7 @@ namespace Models
         public ProjectState State { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public DateTime StartDate { get; set; }
 
         [Required]

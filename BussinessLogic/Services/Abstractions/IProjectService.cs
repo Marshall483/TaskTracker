@@ -7,10 +7,10 @@ using ViewModels;
 
 namespace Abstractions
 {
-    public interface IProjectService<TResult>
+    public interface IProjectService<TResult, TProject>
     {
-        public Task<TResult> Create();
-        public Task<TResult> View();
+        public Task<TResult> Create(TProject project);
+        public Task<TResult> View(string id);
         public Task<TResult> Edit();
         public Task<TResult> Delete();
 

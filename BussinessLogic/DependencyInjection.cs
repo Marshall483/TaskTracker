@@ -15,9 +15,9 @@ namespace BussinessLogic
         public static IServiceCollection ConfigureBussinessLogic(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddSingleton<IConstructor<CreateProjectViewModel, Project>, CreateProjectConstructor>();
-            services.AddSingleton<IConstructor<EditProjectViewModel, Project>, EditProjectConstructor>();
-            services.AddSingleton<IProjectService<Either<Project, ICollection<Error>>>, ProjectService>();
+            services.AddTransient<IConstructor<CreateProjectViewModel, Project>, CreateProjectConstructor>();
+            services.AddTransient<IConstructor<EditProjectViewModel, Project>, EditProjectConstructor>();
+            services.AddTransient<IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel>, ProjectService>();
 
             return services;
         }

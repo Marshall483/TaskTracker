@@ -7,5 +7,7 @@ namespace Abstractions
     public interface IConstructor<TView, TModel>
     {
         public TView ConsructView(TModel model);
+
+        public TModel ConstructModel(TView view);
     }
 }
