@@ -6,7 +6,7 @@ using Models;
 using Monads;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using ViewModels;
 
@@ -30,12 +30,13 @@ namespace TaskTracker.Controllers
             _editor = editor;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(string taskGuid)
         {
             var res = await _taskService.View(taskGuid);
 
             if (res.Succeeded)
-                return View(_creator.ConsructView(res.GetResult));
+                return View(res.GetResult);
             else
                 foreach (var error in res.GetFail)
                     ModelState.AddModelError(string.Empty, (string)error);
@@ -48,6 +49,7 @@ namespace TaskTracker.Controllers
         {
             var model = new CreateTaskViewModel();
             model.ProjectGuid = Guid.Parse(projectGuid);
+            model.State = new SelectList(new[] { "ToDo", "In Progress", "Done" });
 
             return View("NewTaskPartial", model);
         }
@@ -60,7 +62,7 @@ namespace TaskTracker.Controllers
                 var res = await _taskService.Create(taskModel);
 
                 if (res.Succeeded)
-                    return View(_creator.ConsructView(res.GetResult));
+                    return RedirectToAction("Index", new { taskGuid = res.GetResult.Id });
                 else
                     foreach (var error in res.GetFail)
                         ModelState.AddModelError(string.Empty, (string)error);
@@ -68,12 +70,25 @@ namespace TaskTracker.Controllers
             return View("NewTaskPartial", taskModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(string taskGuid)
+        {
+            var res = await _taskService.View(taskGuid);
+
+            if (res.Succeeded)
+                return View(_editor.ConsructView(res.GetResult));
+            else
+                foreach (var error in res.GetFail)
+                    ModelState.AddModelError(string.Empty, (string)error);
+
+            return View(new EditTaskViewModel());
+        }
+
+
         [HttpPost]
-        public async Task<IActionResult> Edit(EditTaskViewModel taskModel)
+        public async Task<IActionResult> EditTask(EditTaskViewModel taskModel)
         {
             var res = await _taskService.Edit(taskModel);
-
-            //Here problem with TaskGuid in EditTaskViewModel
 
             if (res.Succeeded)
                 return RedirectToAction("Index", new { taskGuid = taskModel.TaskGuid});
@@ -82,6 +97,18 @@ namespace TaskTracker.Controllers
                     ModelState.AddModelError(string.Empty, (string)error);
 
             return View(taskModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddField(AddTaskFieldViewModel fieldModel)
+        {
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditField(AddTaskFieldViewModel fieldModel)
+        {
+
         }
 
         [HttpPost]

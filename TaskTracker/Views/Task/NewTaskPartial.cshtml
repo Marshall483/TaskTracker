@@ -1,12 +1,12 @@
 ﻿@model CreateTaskViewModel
 
 
-@using (Html.BeginForm("PostCreate", "Task", FormMethod.Post))
+@using (Html.BeginForm("CreateTask", "Task", FormMethod.Post))
 {
     @Html.ValidationSummary(true);
     @Html.Hidden("ProjectGuid", Model.ProjectGuid.ToString())
 
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <div class="my-3 p-3 rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">New task?</h6>
         <div class="media text-muted pt-3">
 
@@ -16,6 +16,16 @@
                 <div>
                     <input class="form-control" asp-for="Name" , type="text" placeholder="The task is...">
                     <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <p>Set up new state</p>
+                <label asp-for="TaskState" , class="sr-only">Set up new state.</label>
+
+                <div>
+                    @Html.DropDownList("TaskState", Model.State, new { required = ""})
+                    <span asp-validation-for="TaskState" class="text-danger"></span>
                 </div>
             </div>
 

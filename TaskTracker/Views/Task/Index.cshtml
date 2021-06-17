@@ -1,10 +1,10 @@
 ﻿@model ProjectTask
 
-    <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-        <img class="mr-3" src="/docs/4.3.1/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48">
+    <div class="d-flex align-items-center p-3 my-3 bg-purple rounded shadow-sm">
+        <img class="mr-3" src="/IMG/T-TASKS.jpg" alt="" width="48" height="48">
         <div class="lh-100">
-            <h1 class="mb-0 text-white lh-100">@Model.TaskName</h1>
-            <div class="mb-0 text-white lh-100">State:
+            <h1 class="mb-0 lh-100">@Model.TaskName</h1>
+            <div class="mb-0 lh-100">State:
                 
                 @{
                     if (TaskState.Done == Model.State)
@@ -24,7 +24,7 @@
         @{
             if (Model.AnyFields)
             {
-                <h6 class="border-bottom border-gray pb-2 mb-0">All fields</h6>
+                <h6 class="border-bottom border-gray pb-2 mb-0">All Fields</h6>
 
                 foreach (var field in Model.Fields)
                 {
@@ -36,7 +36,7 @@
 
                             <div class="d-flex justify-content-between align-items-center w-100">
                                 <strong class="text-gray-dark">@field.Description</strong>
-                                <a href="#">Edit</a>
+                                <a asp-action="Edit" asp-route-projectGuid="@Model.ProjectId.ToString()">Edit?</a>
                             </div>
 
                         </div>
@@ -44,11 +44,15 @@
 
                 }
             }
+            else
+            {
+                <h6 class="border-bottom border-gray pb-2 mb-0">No fiels!</h6>
+            }
 
         }
 
         <hr>
 
-        @await Html.PartialAsync("NewFieldPartial", new AddTaskFieldViewModel() { ProjectGuid=Model.ProjectId } )
+        @await Html.PartialAsync("NewFieldPartial", new AddTaskFieldViewModel() { TaskGuid = Model.Id })
 
     </div>

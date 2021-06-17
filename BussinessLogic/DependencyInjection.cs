@@ -19,6 +19,10 @@ namespace BussinessLogic
             services.AddTransient<IConstructor<EditProjectViewModel, Project>, EditProjectConstructor>();
             services.AddTransient<IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel, EditProjectViewModel>, ProjectService>();
 
+            services.AddTransient<IConstructor<CreateTaskViewModel, ProjectTask>, CreateTaskConstructor>();
+            services.AddTransient<IConstructor<EditTaskViewModel, ProjectTask>, EditTaskConstructor>();
+            services.AddTransient<IProjectService<Either<ProjectTask, ICollection<Error>>, CreateTaskViewModel, EditTaskViewModel>, TaskService>();
+
             return services;
         }
     }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ViewModels
 {
-    public class AddTaskFieldViewModel
+    public class EditFieldViewModel
     {
         [Required]
         [Display(Name = "Well, what you want to do?.")]
@@ -12,5 +12,7 @@ namespace ViewModels
         public string Descrition { get; set; }
 
         public Guid TaskGuid { get; set; }
+        public Guid FieldGuid { get; set; }
+
     }
 }

@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model EditTaskViewModel
+
+@using (Html.BeginForm("EditTask", "Task", FormMethod.Post))
+{
+    @Html.ValidationSummary(true);
+    @Html.Hidden("ProjectGuid", Model.ProjectGuid.ToString())
+    @Html.Hidden("TaskGuid", Model.TaskGuid.ToString())
+
+
+    <div class="my-3 p-3 rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">New task?</h6>
+        <div class="media text-muted pt-3">
+
+            <div class="form-wrap">
+                <p>Name of the task</p>
+                <label asp-for="Name" , class="sr-only">Name of the task</label>
+
+                <div>
+                    <input class="form-control" asp-for="Name" , type="text" value="@Model.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <p>Set up new state</p>
+                    <label asp-for="TaskState" , class="sr-only">Set up new state.</label>
+
+                    <div>
+                        @Html.DropDownList("TaskState", Model.State, new { required = "", value=Model.TaskState })
+                        <span asp-validation-for="TaskState" class="text-danger"></span>
+                    </div>
+            </div>
+
+        </div>
+
+        <small class="d-block text-right mt-3">
+            <button class="alert-warning">Edit task</button>
+        </small>
+
+    </div>
 }
