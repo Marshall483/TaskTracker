@@ -21,7 +21,7 @@ namespace TaskTracker.Controllers
         private readonly INotificator<bool> _notify;
         private readonly IConstructor<CreateProjectViewModel, Project> _createProject;
         private readonly IConstructor<EditProjectViewModel, Project> _editProject;
-        protected readonly IProjectService<Either<Project, ICollection<Error>>> _projectService;
+        private readonly IProjectService<Either<Project, ICollection<Error>>> _projectService;
 
         public ProjectController(INotificator<bool> notificator, UserManager<User> userManager, 
             IProjectService<Either<Project, ICollection<Error>>> projectService,
