@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using Models;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Notifications
@@ -8,34 +8,27 @@ namespace Infrastructure.Notifications
         Succeeded
     }
 
-    public enum SecurityReason
+    public enum ProjectReason
     {
-        PassportUpdated,
-        PasswordUpdated,
-        ProfileUpdated
+        Created,
+        PriorityChanged,
+        StateChanged,
     }
 
-    public enum BetReason
+    public enum TaskReason
     {
-        Applyed,
-        Winned,
-        Loosed
+        Created,
+        StateUpdated
     }
 
-    public enum TransactionReason
-    {
-        Passed
-    }
 
     public interface INotificator<TResult>
     {
         public Task<TResult> AboutRegistrationAsync(RegistrationReason reson, string email);
 
-        public Task<TResult> AboutSecurityAsync(SecurityReason reson, string email);
+        public Task<TResult> AboutProjectAsync(ProjectReason reson, string email, Project project);
 
-        public Task<TResult> AboutBetAsync(BetReason reson, string email, UsersBets bet);
-
-        public Task<TResult> AboutTransactionAsync(TransactionReason reson, string email, Transactions transaction);
+        public Task<TResult> AboutTaskAsync(TaskReason reson, string email, ProjectTask task);
 
     }
 }

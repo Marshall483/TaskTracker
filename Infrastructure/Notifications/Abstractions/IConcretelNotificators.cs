@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using Models;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Notifications
@@ -8,22 +8,16 @@ namespace Infrastructure.Notifications
         public Task<TResult> AboutRegistrationSucceeded(string email);
     }
 
-    public interface IBettingNotificator<TResult>
+    public interface IProjectNotificator<TResult>
     {
-        public Task<TResult> AboutBetApplyed(string email, UsersBets bet);
-        public Task<TResult> AboutBetWinned(string email, UsersBets bet);
-        public Task<TResult> AboutBetLoosed(string email, UsersBets bet);
+        public Task<TResult> AboutProjectCreated(string email, Project project);
+        public Task<TResult> AboutStateChanged(string email, Project project);
+        public Task<TResult> AboutPriorityChanged(string email, Project project);
     }
 
-    public interface ISecurityNotificator<TResult>
+    public interface ITaskNotificator<TResult>
     {
-        public Task<TResult> AboutPassportUpdated(string email);
-        public Task<TResult> AboutProfileUpdated(string email);
-        public Task<TResult> AboutPasswordUpdated(string email);
-    }
-
-    public interface ITransactionsNotificator<TResult>
-    {
-        public Task<TResult> AboutTransactionPassed(string email, Transactions transaction);
+        public Task<TResult> AboutTaskCreated(string email, ProjectTask task);
+        public Task<TResult> AboutStateUpdated(string email, ProjectTask task);
     }
 }

@@ -11,7 +11,7 @@ namespace Infrastructure.EmailNotifications
         public string SourceEmail { get; set; }
         public string SourcePassword { get; set; }
         public int Port { get; set; }
-        public int UseSSL { get; set; }
+        public string UseSSL { get; set; }
     }
 
     public class EmailSender
@@ -33,7 +33,7 @@ namespace Infrastructure.EmailNotifications
             {
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync("smtp.mail.ru", _secrets.Port, _secrets.UseSSL == 1);
+                    await client.ConnectAsync("smtp.mail.ru", _secrets.Port, bool.Parse(_secrets.UseSSL));
                     await client.AuthenticateAsync(_secrets.SourceEmail, _secrets.SourcePassword);
                     await client.SendAsync(emailMessage);
 
@@ -52,7 +52,7 @@ namespace Infrastructure.EmailNotifications
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Admimistration s-bet", _secrets.SourceEmail));
+            emailMessage.From.Add(new MailboxAddress("Admimistration task tracker", _secrets.SourceEmail));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
 

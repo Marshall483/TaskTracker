@@ -1,0 +1,29 @@
+﻿@model AddTaskFieldViewModel
+
+
+@using (Html.BeginForm("AddField", "Task", FormMethod.Post))
+{
+    @Html.ValidationSummary(true);
+
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">New field?</h6>
+        <div class="media text-muted pt-3">
+
+            <div class="form-wrap">
+                <label asp-for="Descrition" , class="sr-only">Issue...</label>
+
+                <div>
+                    <input class="form-control" asp-for="Descrition" , type="text" placeholder="Issue...">
+                    <span asp-validation-for="Descrition" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input class="form-control" asp-for="ProjectGuid" , type="hidden" value="@Model.ProjectGuid">
+
+        </div>
+
+        <small class="d-block text-right mt-3">
+            <button class="alert-warning">Add line</button>
+        </small>
+    </div>
+}

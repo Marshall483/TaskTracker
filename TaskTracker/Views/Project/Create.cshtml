@@ -1,0 +1,63 @@
+﻿@model CreateProjectViewModel
+
+@using (Html.BeginForm("PostCreate", "Project", FormMethod.Post))
+{
+    @Html.ValidationSummary(true);
+    @Html.Hidden("UserGuid", Guid.Parse((string)ViewBag.UserGuid));
+
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">New project.</h6>
+        <div class="media text-muted pt-3">
+
+            <div class="form-wrap">
+                <label asp-for="Name" , class="sr-only">Give name for project.</label>
+
+                <div>
+                    <input class="form-control" asp-for="Name" , type="text" placeholder="Name" value="@Model.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <label asp-for="Priority" , class="sr-only">Set up new priority.</label>
+
+                <div>
+                    @Html.DropDownList("Priority", Model.PrioritySelect, new { required = "" })
+                    <span asp-validation-for="Priority" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <label asp-for="State" , class="sr-only">Set up new state.</label>
+
+                <div>
+                    @Html.DropDownList("State", Model.StateSelect, new { required = "" })
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <label asp-for="StartDate" , class="sr-only">Select start date.</label>
+
+                <div>
+                    <input class="form-control" asp-for="StartDate" , type="date" placeholder="Start date" value="@Model.StartDate">
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <label asp-for="CompetitionDate" , class="sr-only">Select competition date.</label>
+
+                <div>
+                    <input class="form-control" asp-for="CompetitionDate" , type="date" placeholder="Competition date" value="@Model.CompetitionDate">
+                    <span asp-validation-for="CompetitionDate" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <small class="d-block text-right mt-3">
+            <button class="alert-warning">Create</button>
+        </small>
+    </div>
+}

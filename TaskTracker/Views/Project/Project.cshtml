@@ -1,0 +1,83 @@
+﻿@model Project
+
+<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+        <h1 class="display-4 font-italic">@Model.ProjectName.</h1>
+        <div class="display-4 font-italic">State:
+
+            @{
+                if (ProjectState.Active == Model.State)
+                { <p style="color: green">Active</p> }
+                else if (ProjectState.NotStarted == Model.State)
+                { <p style="color: mediumturquoise">Not started</p>}
+                else
+                { <p style="color: red">Completed</p>}
+            }
+
+        </div>
+        <p class="lead mb-0">Start - @Model.StartDate.ToString("MMMM dd, yyyy"), End - @Model.CompetitionDate.ToString("MMMM dd, yyyy").</p>
+    </div>
+</div>
+
+<hr>
+
+<h1>All tasks</h1>
+
+@{ 
+    if(Model.AnyTask)
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>State</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                  @{ int counter = 0; }
+
+                  @foreach (var task in Model.Tasks)
+                   {
+                        <tr>
+
+                            <td>@{++counter;}</td>
+                            <td>@task.TaskName</td>
+
+                            <td>@{
+                                if (TaskState.Done == task.State) { <p style="color: green">Done</p> }
+                                else if (TaskState.InProgress == task.State) { <p style="color: mediumturquoise">In progress</p>}
+                                else { <p style ="color: red">ToDo</p>} }.
+                            </td>
+
+                            <td> 
+                                <div class="btn-group-sm">
+                                    <button class="btn-info">View</button>
+                                </div> 
+                            </td>
+
+                        </tr>
+                   }
+
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+       <h1 class="h2">No any more tasks here</h1>
+       <div class="btn-toolbar mb-2 mb-md-0">
+           <div class="btn-group mr-2">
+               <button type="button" class="btn btn-sm btn-outline-secondary">Edit project</button>
+               <button type="button" class="btn btn-sm btn-outline-secondary">Create another</button>
+           </div>
+        </div>
+    </div>
+
+}
