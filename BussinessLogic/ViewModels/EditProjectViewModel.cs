@@ -37,5 +37,7 @@ namespace ViewModels
         [Required]
         public Guid ProjectGuid { get; set; }
 
+        public Guid UserGuid { get; set; }
+
     }
 }

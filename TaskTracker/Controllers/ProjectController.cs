@@ -42,6 +42,7 @@ namespace TaskTracker.Controllers
             var user = _user.AndProjects(User.Identity.Name);
 
             ViewBag.UserGuid = user.Id.ToString();
+            ViewData["UserGuid"] = user.Id.ToString();
 
             return View(user.Projects);
         }
@@ -60,7 +61,7 @@ namespace TaskTracker.Controllers
             if (ModelState.IsValid)
             {
                 ViewBag.UserGuid = project.UserGuid;
-
+                 
                 var res = await _projectService.Create(project);
 
                 if (res.Succeeded)

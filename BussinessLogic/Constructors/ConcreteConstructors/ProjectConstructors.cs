@@ -86,6 +86,8 @@ namespace Constructors
             model.State = _stateByEnumMap[project.State];
             model.StartDate = project.StartDate;
             model.CompetitionDate = project.CompetitionDate;
+            model.StateSelect = new SelectList(_stateByStringMap.Keys);
+            model.PrioritySelect = new SelectList(_priorityByStringMap.Keys);
 
             return model;
         }

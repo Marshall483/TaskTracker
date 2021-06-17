@@ -25,8 +25,9 @@ namespace Models
         [Required]
         public string ProjectName { get; set; }
 
+        // Must be private, but i cant map it to db.
         [Required]
-        private int _priority;
+        public int intPriority { get; set; }
 
         public ICollection<ProjectTask> Tasks { get; set; }
 
@@ -49,14 +50,14 @@ namespace Models
         [NotMapped]
         public int Priority
         {
-            get => _priority;
+            get => intPriority;
             set
             {
                 //   Low            Normal        High         
                 if (value == 1 || value == 2 || value == 3)
-                    _priority = value;
+                    intPriority = value;
                 else
-                    _priority = 2;
+                    intPriority = 2;
             }
         }
     }

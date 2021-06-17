@@ -3,7 +3,8 @@
 <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
         <h1 class="display-4 font-italic">Project @Model.ProjectName</h1>
-        <div class="display-inline font-italic">State:
+        <div class="display-inline font-italic">
+            State:
 
             @{
                 if (ProjectState.Active == Model.State)
@@ -12,6 +13,16 @@
                 { <p style="color: mediumturquoise">Not started</p>}
                 else
                 { <p style="color: red">Completed</p>}
+            }
+
+            Priority: 
+            @{
+                if (Model.Priority == 1)
+                { <p style="color: mediumturquoise">Low</p> }
+                else if (Model.Priority == 2)
+                { <p style="color: green">Normal</p>}
+                else
+                { <p style="color: red">High</p>}
             }
 
         </div>

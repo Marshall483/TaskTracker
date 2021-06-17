@@ -19,10 +19,12 @@ namespace Services
         private readonly IConstructor<EditProjectViewModel, Project> _editor;
         private readonly Database _db;
 
-        public ProjectService(IConstructor<CreateProjectViewModel, Project> constructor,
-            Database db)
+        public ProjectService(Database db,
+            IConstructor<EditProjectViewModel, Project> editor,
+            IConstructor<CreateProjectViewModel, Project> creator)
         {
-            _creator = constructor;
+            _editor = editor; 
+            _creator = creator;
             _db = db;
         }
         public async Task<Either<Project, ICollection<Error>>> Create(CreateProjectViewModel projectModel)
@@ -77,9 +79,13 @@ namespace Services
                     WithError(new Error[] { "Project not found or not exist." });
 
             var edited = _editor.ConstructModel(model);
-            edited.Id = model.ProjectGuid;
 
-            _db.Projects.Update(edited);
+            edited.Id = model.ProjectGuid;
+            edited.UserId = project.UserId;
+
+            _db.Projects.Remove(project);
+            _db.Projects.Add(edited);
+
             var inserted = await _db.SaveChangesAsync();
 
             if (inserted > 0)
