@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ViewModels;
 
 namespace TaskTracker.Controllers
 {
@@ -20,16 +21,20 @@ namespace TaskTracker.Controllers
         public IActionResult Index() =>
             View();
 
-        [HttpPost]
-        public IActionResult Create(Guid forProject) =>
+        [HttpGet]
+        public IActionResult Create(string projectGuid) =>
             View();
 
         [HttpPost]
-        public IActionResult Edit(Guid guid) =>
+        public IActionResult CreateTask(CreateTaskViewModel viewModel) =>
             View();
 
         [HttpPost]
-        public IActionResult Delete(Guid guid) =>
+        public IActionResult Edit(string taskGuid) =>
+            View();
+
+        [HttpPost]
+        public IActionResult Delete(string taskGuid) =>
             View();
     }
 }

@@ -17,7 +17,7 @@ namespace BussinessLogic
         {
             services.AddTransient<IConstructor<CreateProjectViewModel, Project>, CreateProjectConstructor>();
             services.AddTransient<IConstructor<EditProjectViewModel, Project>, EditProjectConstructor>();
-            services.AddTransient<IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel>, ProjectService>();
+            services.AddTransient<IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel, EditProjectViewModel>, ProjectService>();
 
             return services;
         }

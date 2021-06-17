@@ -3,7 +3,7 @@
 @using (Html.BeginForm("Create", "Project", FormMethod.Post))
 {
     @Html.ValidationSummary(true);
-    @Html.Hidden("UserGuid", Guid.Parse((string)ViewBag.UserGuid));
+    @Html.Hidden("UserGuid", Guid.Parse((string)ViewBag.UserGuid.ToString()));
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">New project.</h6>

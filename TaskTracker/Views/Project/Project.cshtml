@@ -74,8 +74,9 @@
        <h1 class="h2">No any more tasks here</h1>
        <div class="btn-toolbar mb-2 mb-md-0">
            <div class="btn-group mr-2">
-               <button type="button" class="btn btn-sm btn-outline-secondary">Edit project</button>
-               <button type="button" class="btn btn-sm btn-outline-secondary">Create task</button>
+               <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-projectGuid="@Model.Id.ToString()">Delete project</a>
+               <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-projectGuid="@Model.Id.ToString()">Edit project</a>
+               <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Create" asp-controller="Task" asp-route-projectGuid="@Model.Id.ToString()">Create task</a>
            </div>
         </div>
     </div>

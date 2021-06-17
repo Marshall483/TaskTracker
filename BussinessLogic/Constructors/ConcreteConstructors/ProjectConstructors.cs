@@ -49,26 +49,26 @@ namespace Constructors
     {
         public CreateProjectViewModel ConsructView(Project project)
         {
-            var viewModel = new CreateProjectViewModel();
+            var model = new CreateProjectViewModel();
 
-            viewModel.StateSelect = new SelectList(_stateByStringMap.Keys);
-            viewModel.PrioritySelect = new SelectList(_priorityByStringMap.Keys);
+            model.StateSelect = new SelectList(_stateByStringMap.Keys);
+            model.PrioritySelect = new SelectList(_priorityByStringMap.Keys);
 
-            return viewModel;
+            return model;
         }
 
         public Project ConstructModel(CreateProjectViewModel model)
         {
-            var domainProjectModel = new Project();
+            var project = new Project();
 
-            domainProjectModel.ProjectName = model.Name;
-            domainProjectModel.Priority = _priorityByStringMap[model.Priority];
-            domainProjectModel.State = _stateByStringMap[model.State];
-            domainProjectModel.StartDate = model.StartDate;
-            domainProjectModel.CompetitionDate = model.CompetitionDate;
-            domainProjectModel.UserId = model.UserGuid;
+            project.ProjectName = model.Name;
+            project.Priority = _priorityByStringMap[model.Priority];
+            project.State = _stateByStringMap[model.State];
+            project.StartDate = model.StartDate;
+            project.CompetitionDate = model.CompetitionDate;
+            project.UserId = model.UserGuid;
 
-            return domainProjectModel;
+            return project;
         }
     }
 
@@ -92,7 +92,15 @@ namespace Constructors
 
         public Project ConstructModel(EditProjectViewModel model)
         {
-            throw new NotFiniteNumberException();
+            var project = new Project();
+
+            project.ProjectName = model.Name;
+            project.Priority = _priorityByStringMap[model.Priority];
+            project.State = _stateByStringMap[model.State];
+            project.StartDate = model.StartDate;
+            project.CompetitionDate = model.CompetitionDate;
+
+            return project;
         }
     }
 }

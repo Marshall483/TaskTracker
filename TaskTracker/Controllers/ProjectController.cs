@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TaskTracker.Controllers
 {
@@ -19,20 +20,20 @@ namespace TaskTracker.Controllers
     {
         private readonly UserManager<User> _user;
         private readonly INotificator<bool> _notify;
-        private readonly IConstructor<CreateProjectViewModel, Project> _createProject;
-        private readonly IConstructor<EditProjectViewModel, Project> _editProject;
-        private readonly IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel> _projectService;
+        private readonly IConstructor<CreateProjectViewModel, Project> _creator;
+        private readonly IConstructor<EditProjectViewModel, Project> _editor;
+        private readonly IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel, EditProjectViewModel> _projectService;
 
         public ProjectController(INotificator<bool> notificator, UserManager<User> userManager, 
-            IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel> projectService,
+            IProjectService<Either<Project, ICollection<Error>>, CreateProjectViewModel, EditProjectViewModel> projectService,
             IConstructor<CreateProjectViewModel, Project> createProject, 
             IConstructor<EditProjectViewModel, Project> editProject )
         {
             _notify = notificator;
             _user = userManager;
             _projectService = projectService;
-            _createProject = createProject;
-            _editProject = editProject;
+            _creator = createProject;
+            _editor = editProject;
         }
 
         [HttpGet]
@@ -50,7 +51,7 @@ namespace TaskTracker.Controllers
         {
             ViewBag.UserGuid = userGuid;
 
-            return View("Create", _createProject.ConsructView(new Project()));
+            return View("Create", _creator.ConsructView(new Project()));
         }
 
         [HttpPost]
@@ -63,11 +64,14 @@ namespace TaskTracker.Controllers
                 var res = await _projectService.Create(project);
 
                 if (res.Succeeded)
-                    return await Project(res.GetResult.Id.ToString());
+                    return RedirectToAction("Index");
                 else
                     foreach (var error in res.GetFail)
                         ModelState.AddModelError(string.Empty, (string)error);
             }
+
+            project.StateSelect = new SelectList(new[] { "Not started", "Active", "Completed" });
+            project.PrioritySelect = new SelectList(new[] { "Low", "Normal", "High" });
 
             return View(project);
         }
@@ -87,16 +91,52 @@ namespace TaskTracker.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetEdit(Guid guid) =>
-            View();
+        public async Task<IActionResult> Edit(string projectGuid)
+        {
+            var res = await _projectService.View(projectGuid);
+
+            if (res.Succeeded)
+                return View(_editor.ConsructView(res.GetResult));
+            else
+                foreach (var error in res.GetFail)
+                    ModelState.AddModelError(string.Empty, (string)error);
+
+            return RedirectToAction("Index");
+        }
 
         [HttpPost]
-        public IActionResult PostEdit(Guid guid) =>
-            View();
+        public async Task<IActionResult> EditProject(EditProjectViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await _projectService.Edit(model);
 
-        [HttpPost]
-        public IActionResult PostDelete(Guid guid) =>
-            View();
+                if (res.Succeeded)
+                    return View("Project", res.GetResult);
+                else
+                    foreach (var error in res.GetFail)
+                        ModelState.AddModelError(string.Empty, (string)error);
+            }
+
+            model.StateSelect = new SelectList(new[] { "Not started", "Active", "Completed" });
+            model.PrioritySelect = new SelectList(new[] { "Low", "Normal", "High" });
+
+            return View("Edit", model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string projectGuid)
+        {
+            var res = await _projectService.Delete(projectGuid);
+
+            if (res.Succeeded)
+                return RedirectToAction("Index");
+            else
+                foreach (var error in res.GetFail)
+                    ModelState.AddModelError(string.Empty, (string)error);
+
+            return RedirectToAction("Project", routeValues: new { projectGuid });
+        }
         
     }
 }
