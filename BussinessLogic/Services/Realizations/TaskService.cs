@@ -8,6 +8,8 @@ using Monads;
 using ViewModels;
 using DataAccess;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Services 
 {
@@ -103,7 +105,9 @@ namespace Services
                 return Either<ProjectTask, ICollection<Error>>.
                     WithError(new Error[] { "Provided guid null or empty" });
 
-            var task = _db.ProjectTasks.Find(Guid.Parse(taskGuid));
+            var task = _db.ProjectTasks
+                .Include(f => f.Fields)
+                .SingleOrDefault(t => t.Id.Equals(Guid.Parse(taskGuid)));
 
             if (task != null)
                 return Either<ProjectTask, ICollection<Error>>.

@@ -18,20 +18,23 @@ namespace TaskTracker.Controllers
         private readonly INotificator<bool> _notify;
         private readonly IConstructor<CreateTaskViewModel, ProjectTask> _creator;
         private readonly IConstructor<EditTaskViewModel, ProjectTask> _editor;
+        private readonly IFieldService<Either<TaskFields, ICollection<Error>>> _fieldService;
         private readonly IProjectService<Either<ProjectTask, ICollection<Error>>, CreateTaskViewModel, EditTaskViewModel> _taskService;
         public TaskController(INotificator<bool> notificator,
             IProjectService<Either<ProjectTask, ICollection<Error>>, CreateTaskViewModel, EditTaskViewModel> taskService,
             IConstructor<CreateTaskViewModel, ProjectTask> creator,
-            IConstructor<EditTaskViewModel, ProjectTask> editor )
+            IConstructor<EditTaskViewModel, ProjectTask> editor,
+            IFieldService<Either<TaskFields, ICollection<Error>>> fieldService)
         {
             _notify = notificator;
             _taskService = taskService;
             _creator = creator;
             _editor = editor;
+            _fieldService = fieldService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string taskGuid)
+        public async Task<IActionResult> Task(string taskGuid)
         {
             var res = await _taskService.View(taskGuid);
 
@@ -62,7 +65,7 @@ namespace TaskTracker.Controllers
                 var res = await _taskService.Create(taskModel);
 
                 if (res.Succeeded)
-                    return RedirectToAction("Index", new { taskGuid = res.GetResult.Id });
+                    return RedirectToAction("Task", new { taskGuid = res.GetResult.Id });
                 else
                     foreach (var error in res.GetFail)
                         ModelState.AddModelError(string.Empty, (string)error);
@@ -91,7 +94,7 @@ namespace TaskTracker.Controllers
             var res = await _taskService.Edit(taskModel);
 
             if (res.Succeeded)
-                return RedirectToAction("Index", new { taskGuid = taskModel.TaskGuid});
+                return RedirectToAction("Task", new { taskGuid = taskModel.TaskGuid});
             else
                 foreach (var error in res.GetFail)
                     ModelState.AddModelError(string.Empty, (string)error);
@@ -99,16 +102,50 @@ namespace TaskTracker.Controllers
             return View(taskModel);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> AddField(AddTaskFieldViewModel fieldModel)
         {
+            if (ModelState.IsValid)
+            {
+                var res = await _fieldService.AddField(fieldModel);
 
+                if(res.Succeeded)
+                    return RedirectToAction("Task", new { taskGuid = fieldModel.TaskGuid });
+                foreach (var error in res.GetFail)
+                    ModelState.AddModelError(string.Empty, (string)error);
+
+            }
+            return View("NewFieldPartial", fieldModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditField(AddTaskFieldViewModel fieldModel)
+        public async Task<IActionResult> EditField(EditFieldViewModel fieldModel)
         {
+            if (ModelState.IsValid)
+            {
+                var res = await _fieldService.EditField(fieldModel);
 
+                if (res.Succeeded)
+                    return RedirectToAction("Task", new { taskGuid = fieldModel.TaskGuid });
+                foreach (var error in res.GetFail)
+                    ModelState.AddModelError(string.Empty, (string)error);
+
+            }
+            return View("NewFieldPartial", fieldModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteField(string fieldGuid)
+        {
+            var res = await _fieldService.DeleteField(fieldGuid);
+
+            if (res.Succeeded)
+                return RedirectToAction("Task", new { taskGuid = res.GetResult.TaskId });
+            foreach (var error in res.GetFail)
+                ModelState.AddModelError(string.Empty, (string)error);
+
+            return RedirectToAction("Index", "Project");
         }
 
         [HttpPost]

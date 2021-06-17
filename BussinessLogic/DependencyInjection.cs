@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models;
 using Monads;
+using Realizations;
 using Services;
 using System.Collections.Generic;
 using ViewModels;
@@ -22,6 +23,8 @@ namespace BussinessLogic
             services.AddTransient<IConstructor<CreateTaskViewModel, ProjectTask>, CreateTaskConstructor>();
             services.AddTransient<IConstructor<EditTaskViewModel, ProjectTask>, EditTaskConstructor>();
             services.AddTransient<IProjectService<Either<ProjectTask, ICollection<Error>>, CreateTaskViewModel, EditTaskViewModel>, TaskService>();
+
+            services.AddTransient<IFieldService<Either<TaskFields, ICollection<Error>>>, FieldService>();
 
             return services;
         }

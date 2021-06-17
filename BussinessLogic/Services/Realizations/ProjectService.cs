@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstractions;
 using DataAccess;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Monads;
 using ViewModels;
@@ -52,7 +54,11 @@ namespace Services
                 return Either<Project, ICollection<Error>>.
                     WithError(new Error[] { "Provided guid null or empty" });
 
-            var project = _db.Projects.Find(Guid.Parse(guid));
+            var project = _db.Projects
+                .Select(p => p)
+                .Where(p => p.Id == Guid.Parse(guid))
+                .Include(t => t.Tasks)
+                .Single();
 
             if(project != null)
                 return Either<Project, ICollection<Error>>.
