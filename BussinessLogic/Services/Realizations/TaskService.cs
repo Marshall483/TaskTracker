@@ -79,7 +79,7 @@ namespace Services
                 return Either<ProjectTask, ICollection<Error>>.
                     WithError(new Error[] { "Provided guid null or empty" });
 
-            var task = _db.ProjectTasks.Find(model.ProjectGuid);
+            var task = _db.ProjectTasks.Find(model.TaskGuid);
 
             if (task == null)
                 return Either<ProjectTask, ICollection<Error>>.
@@ -106,8 +106,10 @@ namespace Services
                     WithError(new Error[] { "Provided guid null or empty" });
 
             var task = _db.ProjectTasks
+                .Select(t => t) // To avoid "IvalidOperationException"
+                .Where(t => t.Id.Equals(Guid.Parse(taskGuid)))
                 .Include(f => f.Fields)
-                .SingleOrDefault(t => t.Id.Equals(Guid.Parse(taskGuid)));
+                .Single();
 
             if (task != null)
                 return Either<ProjectTask, ICollection<Error>>.

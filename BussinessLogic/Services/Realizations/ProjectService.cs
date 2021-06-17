@@ -55,7 +55,7 @@ namespace Services
                     WithError(new Error[] { "Provided guid null or empty" });
 
             var project = _db.Projects
-                .Select(p => p)
+                .Select(p => p) // To avoid "IvalidOperationException"
                 .Where(p => p.Id == Guid.Parse(guid))
                 .Include(t => t.Tasks)
                 .Single();
@@ -86,12 +86,13 @@ namespace Services
 
             var edited = _editor.ConstructModel(model);
 
-            edited.Id = model.ProjectGuid;
-            edited.UserId = project.UserId;
+            project.ProjectName = model.Name;
+            project.Priority = edited.Priority;
+            project.State = edited.State;
+            project.StartDate = model.StartDate;
+            project.CompetitionDate = model.CompetitionDate;
 
-            _db.Projects.Remove(project);
-            _db.Projects.Add(edited);
-
+            _db.Projects.Update(project);
             var inserted = await _db.SaveChangesAsync();
 
             if (inserted > 0)

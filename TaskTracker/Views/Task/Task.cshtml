@@ -4,20 +4,29 @@
         <img class="mr-3" src="/IMG/T-TASKS.jpg" alt="" width="48" height="48">
         <div class="lh-100">
             <h1 class="mb-0 lh-100">@Model.TaskName</h1>
-            <div class="mb-0 lh-100">State:
-                
+            <div class="mb-0 lh-100">
+                State:
+
                 @{
                     if (TaskState.Done == Model.State)
                     { <p style="color: green">Done</p> }
                     else if (TaskState.InProgress == Model.State)
                     { <p style="color: mediumturquoise">In progress</p>}
                     else
-                    { <p style="color: red">ToDo</p>} 
+                    { <p style="color: red">ToDo</p>}
                 }
 
             </div>
+
+            <div class="btn-group">
+
+                <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Task" asp-action="Edit" asp-route-taskGuid="@Model.Id.ToString()">Edit</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Task" asp-action="Delete" asp-route-taskGuid="@Model.Id.ToString()">Delete</a>
+
+            </div>
+
         </div>
-    </div>
+        </div>
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
 

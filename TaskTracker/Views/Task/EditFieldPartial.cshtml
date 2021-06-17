@@ -19,8 +19,9 @@
 
             <button class="btn-success">Apply</button>
 
-            <small><a class="btn-danger" asp-action="DeleteField" asp-controller="Task" 
-                      asp-route-fieldGuid="@Model.FieldGuid.ToString()">Delete field</a></small>
+            <small><a class="btn" asp-action="DeleteField" asp-controller="Task" 
+                      asp-route-fieldGuid="@Model.FieldGuid.ToString()"
+                      asp-route-taskGuid="@Model.TaskGuid.ToString()">Delete field</a></small>
         </div>
     </div>
 }

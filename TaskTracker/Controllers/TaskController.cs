@@ -91,13 +91,16 @@ namespace TaskTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> EditTask(EditTaskViewModel taskModel)
         {
-            var res = await _taskService.Edit(taskModel);
+            if (ModelState.IsValid)
+            {
+                var res = await _taskService.Edit(taskModel);
 
-            if (res.Succeeded)
-                return RedirectToAction("Task", new { taskGuid = taskModel.TaskGuid});
-            else
-                foreach (var error in res.GetFail)
-                    ModelState.AddModelError(string.Empty, (string)error);
+                if (res.Succeeded)
+                    return RedirectToAction("Task", new { taskGuid = taskModel.TaskGuid });
+                else
+                    foreach (var error in res.GetFail)
+                        ModelState.AddModelError(string.Empty, (string)error);
+            }
 
             return View(taskModel);
         }
@@ -135,20 +138,20 @@ namespace TaskTracker.Controllers
             return View("NewFieldPartial", fieldModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteField(string fieldGuid)
+        [HttpGet]
+        public async Task<IActionResult> DeleteField(string fieldGuid, string taskGuid)
         {
             var res = await _fieldService.DeleteField(fieldGuid);
 
             if (res.Succeeded)
-                return RedirectToAction("Task", new { taskGuid = res.GetResult.TaskId });
+                return RedirectToAction("Task", new { taskGuid });
             foreach (var error in res.GetFail)
                 ModelState.AddModelError(string.Empty, (string)error);
 
             return RedirectToAction("Index", "Project");
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Delete(string taskGuid)
         {
             var res = await _taskService.Delete(taskGuid);

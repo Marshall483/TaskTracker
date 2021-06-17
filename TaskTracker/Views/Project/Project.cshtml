@@ -57,18 +57,19 @@
                    {
                         <tr>
 
-                            <td>@{++counter;}</td>
+                            <td>@{ ++counter; @counter.ToString() }</td>
                             <td>@task.TaskName</td>
 
                             <td>@{
                                 if (TaskState.Done == task.State) { <p style="color: green">Done</p> }
                                 else if (TaskState.InProgress == task.State) { <p style="color: mediumturquoise">In progress</p>}
-                                else { <p style ="color: red">ToDo</p>} }.
+                                else { <p style ="color: red">ToDo</p>} }
                             </td>
 
                             <td> 
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Task" asp-route-taskGuid="@task.Id.ToString()">View</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Task" asp-action="Task" asp-route-taskGuid="@task.Id.ToString()">View</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Task" asp-action="Delete" asp-route-taskGuid="@task.Id.ToString()">Delete</a>
                                 </div> 
                             </td>
 
