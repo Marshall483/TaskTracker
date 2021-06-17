@@ -4,7 +4,7 @@
 @using (Html.BeginForm("PostCreate", "Task", FormMethod.Post))
 {
     @Html.ValidationSummary(true);
-    @Html.Hidden("ProjectGuid", Model.ProjectGuid)
+    @Html.Hidden("ProjectGuid", Model.ProjectGuid.ToString())
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">New task?</h6>

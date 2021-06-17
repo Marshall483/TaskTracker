@@ -15,6 +15,7 @@ namespace ViewModels
 
         [Required]
         [Display(Name = "Choose a task state.")]
+        public string TaskState { get; set; }  
         public SelectList State { get; set; }
 
         public Guid ProjectGuid { get; set; }
