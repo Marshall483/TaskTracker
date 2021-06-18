@@ -30,11 +30,9 @@ namespace Realizations
             var inserted = await _db.SaveChangesAsync();
 
             if (inserted > 0)
-                return Either<TaskFields, ICollection<Error>>.
-                    WithSuccess(field);
+                return Success(field);
             else
-                return Either<TaskFields, ICollection<Error>>.
-                    WithError(new Error[] { "Field not added." });
+                return Error("Field not added.");
         }
 
         public async Task<Either<TaskFields, ICollection<Error>>> DeleteField(string fieldGuid)
@@ -45,11 +43,9 @@ namespace Realizations
             var deleted = await _db.SaveChangesAsync();
 
             if (deleted > 0)
-                return Either<TaskFields, ICollection<Error>>.
-                    WithSuccess(new TaskFields());
+                return Success(new TaskFields());
             else
-                return Either<TaskFields, ICollection<Error>>.
-                    WithError(new Error[] { "Field not deleted." });
+                return Error("Field not deleted.");
         }
 
         public async Task<Either<TaskFields, ICollection<Error>>> EditField(EditFieldViewModel fieldModel)
@@ -61,11 +57,17 @@ namespace Realizations
             var updated = await _db.SaveChangesAsync();
 
             if (updated > 0)
-                return Either<TaskFields, ICollection<Error>>.
-                    WithSuccess(field);
+                return Success(field);
             else
-                return Either<TaskFields, ICollection<Error>>.
-                    WithError(new Error[] { "Field not edited." });
+                return Error("Field not edited.");
         }
+
+        private static Either<TaskFields, ICollection<Error>> Error(string error) =>
+            Either<TaskFields, ICollection<Error>>.
+                    WithError(new Error[] { error });
+
+        private static Either<TaskFields, ICollection<Error>> Success(TaskFields field) =>
+           Either<TaskFields, ICollection<Error>>.
+                   WithSuccess(field);
     }
 }

@@ -34,8 +34,7 @@ namespace Services
         public async Task<Either<ProjectTask, ICollection<Error>>> Create(CreateTaskViewModel model)
         {
             if (!ValidGuid(model.ProjectGuid.ToString()))
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Provided guid null or empty" });
+                return Error("Provided guid null or empty");
 
             var task = _creator.ConstructModel(model);
 
@@ -43,47 +42,39 @@ namespace Services
             var inserted = await _db.SaveChangesAsync();
 
             if (inserted > 0)
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithSuccess(task);
+                return Success(task);
             else
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Project not created." });
+                return Error( "Project not created.");
         }
 
         public async Task<Either<ProjectTask, ICollection<Error>>> Delete(string taskGuid)
         {
             if (!ValidGuid(taskGuid))
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Provided guid null or empty" });
+                return Error("Provided guid null or empty");
 
             var task = _db.ProjectTasks.Find(Guid.Parse(taskGuid));
 
             if (task == null)
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Task not found or not exist." });
+                return Error("Task not found or not exist.");
 
             _db.ProjectTasks.Remove(task);
             var deleted = await _db.SaveChangesAsync();
 
             if (deleted > 0)
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithSuccess(new ProjectTask());
+                return Success(new ProjectTask());
             else
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Task not deletd." });
+                return Error("Task not deletd.");
         }
 
         public async Task<Either<ProjectTask, ICollection<Error>>> Edit(EditTaskViewModel model)
         {
             if (!ValidGuid(model.ProjectGuid.ToString()))
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Provided guid null or empty" });
+                return Error("Provided guid null or empty");
 
             var task = _db.ProjectTasks.Find(model.TaskGuid);
 
             if (task == null)
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Task not found or not exist." });
+                return Error("Task not found or not exist.");
 
             task.TaskName = model.Name;
             task.State = _taskStateByStringMap[model.TaskState];
@@ -92,18 +83,15 @@ namespace Services
             var updated = await _db.SaveChangesAsync();
 
             if (updated > 0)
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithSuccess(task);
+                return Success(task);
             else
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Task not updated." });
+                return Error("Task not updated.");
         }
 
         public async Task<Either<ProjectTask, ICollection<Error>>> View(string taskGuid)
         {
             if (!ValidGuid(taskGuid))
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Provided guid null or empty" });
+                return Error("Provided guid null or empty");
 
             var task = _db.ProjectTasks
                 .Select(t => t) // To avoid "IvalidOperationException"
@@ -112,11 +100,9 @@ namespace Services
                 .Single();
 
             if (task != null)
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithSuccess(task);
+                return Success(task);
             else
-                return Either<ProjectTask, ICollection<Error>>.
-                    WithError(new Error[] { "Task not found or not exist." });
+                return Error("Task not found or not exist.");
         }
 
         private bool ValidGuid(string guid) =>
@@ -124,7 +110,15 @@ namespace Services
             guid != "" &&
             guid != Guid.Empty.ToString();
 
-        public readonly Dictionary<string, TaskState> _taskStateByStringMap =
+        private static Either<ProjectTask, ICollection<Error>> Error(string error) =>
+            Either<ProjectTask, ICollection<Error>>.
+                    WithError(new Error[] { error });
+
+        private static Either<ProjectTask, ICollection<Error>> Success(ProjectTask task) =>
+            Either<ProjectTask, ICollection<Error>>.
+                    WithSuccess(task);
+
+        private readonly Dictionary<string, TaskState> _taskStateByStringMap =
             new Dictionary<string, TaskState>
             {
                 { "ToDo", TaskState.ToDo },
