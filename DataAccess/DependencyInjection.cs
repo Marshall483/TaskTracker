@@ -28,7 +28,10 @@ namespace DataAccess
               .AddEntityFrameworkStores<Database>()
               .AddDefaultTokenProviders();
 
-            
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/RegLog";
+            });
 
             return services;
         }

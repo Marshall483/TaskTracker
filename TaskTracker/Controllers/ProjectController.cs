@@ -113,7 +113,7 @@ namespace TaskTracker.Controllers
                 var res = await _projectService.Edit(model);
 
                 if (res.Succeeded)
-                    return View("Project", res.GetResult);
+                    return RedirectToAction("Project", new { projectGuid=res.GetResult.Id });
                 else
                     foreach (var error in res.GetFail)
                         ModelState.AddModelError(string.Empty, (string)error);
