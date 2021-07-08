@@ -15,4 +15,4 @@ Also you can change task state and names.
 ## Delete
 You can delete project, task and fiels on task.
 
-# Dood luck, and waste you time correctly!
+# Good luck, and waste you time correctly!
